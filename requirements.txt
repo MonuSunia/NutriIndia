@@ -1,0 +1,15 @@
+streamlit>=1.45.0
+pandas
+numpy
+sqlalchemy
+plotly
+rapidfuzz
+openpyxl
+streamlit-aggrid
+xlsxwriter
+reportlab
+streamlit-option-menu
+streamlit-extras
+streamlit-lottie
+Pillow
+python-dotenv
