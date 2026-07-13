@@ -13,3 +13,4 @@ streamlit-extras
 streamlit-lottie
 Pillow
 python-dotenv
+pymysql
