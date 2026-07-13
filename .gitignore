@@ -10,7 +10,7 @@ venv/
 .streamlit/secrets.toml
 
 # Database files
-*.db
+# *.db
 
 # IDE
 .vscode/

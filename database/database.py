@@ -1,19 +1,11 @@
-import streamlit as st
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = (
-    f"mysql+pymysql://"
-    f"{st.secrets['DB_USER']}:"
-    f"{st.secrets['DB_PASSWORD']}@"
-    f"{st.secrets['DB_HOST']}:"
-    f"{st.secrets['DB_PORT']}/"
-    f"{st.secrets['DB_NAME']}"
-)
+DATABASE_URL = "sqlite:///database/nutriindia.db"
 
 engine = create_engine(
     DATABASE_URL,
-    pool_pre_ping=True,
+    connect_args={"check_same_thread": False},
     echo=False,
 )
 
