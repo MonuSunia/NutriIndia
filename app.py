@@ -1,7 +1,7 @@
 import streamlit as st
 
 # ==========================================================
-# PAGE CONFIG (FIRST STREAMLIT COMMAND)
+# PAGE CONFIG (MUST BE FIRST STREAMLIT COMMAND)
 # ==========================================================
 
 st.set_page_config(
@@ -18,20 +18,11 @@ st.set_page_config(
 from components.theme import load_theme
 from components.sidebar import show_sidebar
 
-from components.food_explorer import show_food_explorer
-from components.food_details import show_food_details
-from components.compare import show_compare
-from components.nutrient import show_nutrient_explorer
-from components.calculator import show_calculator
-from components.dashboard import show_dashboard
-from components.admin import show_admin
-
 # ==========================================================
 # SERVICES
 # ==========================================================
 
 from services.food_service import (
-    get_all_foods,
     get_food_count,
     get_nutrient_count,
     get_food_groups,
@@ -44,129 +35,122 @@ from services.food_service import (
 load_theme()
 
 # ==========================================================
-# SESSION STATE
-# ==========================================================
-
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
-
-if "food_id" not in st.session_state:
-    st.session_state.food_id = None
-
-# ==========================================================
 # SIDEBAR
 # ==========================================================
 
-selected_page = show_sidebar()
-
-if selected_page:
-    st.session_state.page = selected_page
+show_sidebar()
 
 # ==========================================================
-# HOME
+# HOME PAGE
 # ==========================================================
 
-if st.session_state.page == "Home":
+st.title("🥗 NutriIndia")
 
-    st.title("🥗 NutriIndia")
+st.markdown(
+    """
+## Indian Food Composition Explorer
 
+Welcome to **NutriIndia**, a professional nutrition analysis platform based entirely on the **Indian Food Composition Tables (IFCT 2017)** published by **ICMR – National Institute of Nutrition**.
+
+Use the **navigation menu in the left sidebar** to explore foods, compare nutrients, calculate serving values, and analyze the nutrition database.
+"""
+)
+
+st.divider()
+
+# ==========================================================
+# DATABASE METRICS
+# ==========================================================
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric(
+    "🍎 Foods",
+    get_food_count(),
+)
+
+col2.metric(
+    "🧬 Nutrients",
+    get_nutrient_count(),
+)
+
+col3.metric(
+    "🥦 Food Groups",
+    len(get_food_groups()),
+)
+
+st.divider()
+
+# ==========================================================
+# FEATURES
+# ==========================================================
+
+st.subheader("✨ Features")
+
+left, right = st.columns(2)
+
+with left:
     st.markdown(
         """
-### Indian Food Composition Explorer
+### Food Analysis
 
-Explore the **Indian Food Composition Tables (IFCT 2017)** published by
-**ICMR – National Institute of Nutrition**.
-
-Search foods, compare nutrients, calculate serving sizes,
-explore dashboards and analyze nutrition data.
+- 🍛 Browse Indian foods
+- 🥗 View complete nutrient profiles
+- 🔬 Explore nutrients
+- ⚖ Compare multiple foods
 """
     )
 
-    st.divider()
+with right:
+    st.markdown(
+        """
+### Nutrition Tools
 
-    c1, c2, c3 = st.columns(3)
-
-    c1.metric(
-        "🍎 Foods",
-        get_food_count(),
+- 🥣 Serving size calculator
+- 📈 Nutrition dashboard
+- 📄 CSV export
+- ⚙ Database administration
+"""
     )
 
-    c2.metric(
-        "🧬 Nutrients",
-        get_nutrient_count(),
-    )
+st.divider()
 
-    c3.metric(
-        "🥦 Food Groups",
-        len(get_food_groups()),
-    )
+# ==========================================================
+# ABOUT IFCT
+# ==========================================================
 
-    st.divider()
+st.subheader("📚 About IFCT 2017")
 
-    st.subheader("Features")
+st.info(
+    """
+The **Indian Food Composition Tables (IFCT 2017)** are published by the
+**ICMR – National Institute of Nutrition (NIN)**.
 
-    col1, col2 = st.columns(2)
+NutriIndia uses only the IFCT dataset stored locally in a SQLite database.
+No USDA or other external nutrition datasets are used.
+"""
+)
 
-    with col1:
+st.divider()
 
-        st.markdown("""
+# ==========================================================
+# QUICK START
+# ==========================================================
+
+st.subheader("🚀 Quick Start")
+
+st.markdown(
+    """
+Use the **left sidebar** to navigate to:
+
 - 🍛 Food Explorer
 - 🥗 Food Details
 - 🔬 Nutrient Explorer
 - ⚖ Compare Foods
-""")
-
-    with col2:
-
-        st.markdown("""
 - 🥣 Serving Calculator
 - 📈 Dashboard
-- 📄 CSV Export
-- ⚙ Admin Panel
-""")
-
-    st.divider()
-
-    st.subheader("About IFCT")
-
-    st.info(
-        """
-The **Indian Food Composition Tables (IFCT 2017)** contain nutrient
-composition data for Indian foods.
-
-This application uses only the IFCT database stored locally in MySQL.
-No USDA or external nutrition datasets are used.
+- ⚙ Admin
 """
-    )
+)
 
-# ==========================================================
-# PAGES
-# ==========================================================
-
-elif st.session_state.page == "Food Explorer":
-
-    show_food_explorer()
-
-elif st.session_state.page == "Food Details":
-
-    show_food_details()
-
-elif st.session_state.page == "Compare Foods":
-
-    show_compare()
-
-elif st.session_state.page == "Nutrient Explorer":
-
-    show_nutrient_explorer()
-
-elif st.session_state.page == "Serving Calculator":
-
-    show_calculator()
-
-elif st.session_state.page == "Dashboard":
-
-    show_dashboard()
-
-elif st.session_state.page == "Admin":
-
-    show_admin()
+st.success("✅ NutriIndia")
